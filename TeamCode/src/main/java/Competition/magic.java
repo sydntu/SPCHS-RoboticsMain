@@ -1,37 +1,45 @@
-package org.firstinspires.ftc.teamcode;
+package Competition;
 
+import static org.opencv.core.Core.sqrt;
+
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.IMU;
 
-@TeleOp(name = "main")
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
+import java.lang.Math;
+
+@TeleOp(name = "main", group = "Competition")
 public class magic extends LinearOpMode {
 
+    public static int rdirection = 1;
+    public static int ldirection = -1;
+    public static DcMotor rightFront;
+    public static DcMotor leftFront;
+    public static DcMotor leftRear;
+    public static DcMotor rightRear;
+    public static DcMotor armmotor;
+    public static Servo drone;
+    public static Servo arm;
+    public static Servo riggingsupport;
+    public static DcMotor intakemotor;
+    public static double h = 0.5;
+    public static double g = 1;
+    public static boolean z;
+    public static Servo hand;
+    public static double k = -1;
+    //  public static double x = 0.4;
+    public static int c = 0;
+    public static double b = 0.5;
+    public static double r = 0.56;
+    public static double s;
 
 
-    private int rdirection = 1;
-    private int ldirection = -1;
-    private DcMotor rightFront;
-    private DcMotor leftFront;
-    private DcMotor leftRear;
-    private DcMotor rightRear;
-    private DcMotor armmotor;
-    private Servo drone;
-    private Servo arm;
-    private Servo riggingsupport;
-    private DcMotor intakemotor;
-    private double h = 0.5;
-    private double g = 1;
-    private boolean z;
-    private Servo hand;
-    private double k = -1;
-    //  private double x = 0.4;
-    private int c = 0;
-    private double b = 0.5;
-    private double r = 0.56;
-    private double s;
 
     double frontLeftPower;
     double backLeftPower;
@@ -41,27 +49,32 @@ public class magic extends LinearOpMode {
      * This function is executed when this OpMode is selected from the Driver Station.
      */
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         leftFront = hardwareMap.get(DcMotor.class, "leftFront");
         leftRear = hardwareMap.get(DcMotor.class, "leftRear");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
         armmotor = hardwareMap.get(DcMotor.class, "armmotor");
-        //intakemotor = hardwareMap.get(DcMotor.class, "intakemotor");
+        intakemotor = hardwareMap.get(DcMotor.class, "intakemotor");
         drone = hardwareMap.get(Servo.class, "drone");
         arm = hardwareMap.get(Servo.class, "arm"); //wrist
         hand = hardwareMap.get(Servo.class, "hand");
         riggingsupport = hardwareMap.get(Servo.class, "riggingsupport");
+        IMU imu = hardwareMap.get(IMU.class, "imu");
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
+        imu.initialize(parameters);
 
-        // Reverse one of the drive motors.
-        // You will have to determine which motor to reverse for your robot.
-        // In this example, the right motor was reversed so that positive
-        // applied power makes it move the robot in the forward direction.
+
+        //////////////////////////////////////////////////////////////////
+
+
         waitForStart();
         if (opModeIsActive()) {
             drone.setPosition(0);
             riggingsupport.setPosition(0.56);
-            rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+            leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
             leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
             // Put run blocks here.
             while (opModeIsActive()) {
@@ -83,69 +96,23 @@ public class magic extends LinearOpMode {
                     }
                 }
 
-        /*
-        leftback.setPower((gamepad2.left_stick_y - gamepad2.left_stick_x)*s);
-        rightfront.setPower((gamepad2.left_stick_y - gamepad2.left_stick_x)*s);
-        leftfront.setPower((-gamepad2.left_stick_y - gamepad2.left_stick_x)*s);
-        rightback.setPower((-gamepad2.left_stick_y - gamepad2.left_stick_x)*s);
-        */
-
-        /*
-        double y = -gamepad2.left_stick_y; // Remember, Y stick value is reversed
-        double x = gamepad2.left_stick_x * 1.1; // Counteract imperfect strafing
-        double rx = gamepad2.right_stick_x;
-
-        // Denominator is the largest motor power (absolute value) or 1
-        // This ensures all the powers maintain the same ratio,
-        // but only if at least one is out of the range [-1, 1]
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-        double frontLeftPower = (y + x + rx) / denominator;
-        double backLeftPower = (y - x + rx) / denominator;
-         double frontRightPower = (y - x - rx) / denominator;
-        double backRightPower = (y + x - rx) / denominator;
-
-
-        leftfront.setPower(frontLeftPower);
-        leftback.setPower(backLeftPower);
-        rightfront.setPower(frontRightPower);
-        rightback.setPower(backRightPower);
-        */
-        /*
-        if ((power + Math.abs(turn))>1) {
-          leftfront.setPower(power+turn);
-          rightfront.setPower(power+turn)
-        }
-        */
-        /*
-        if (gamepad2.right_trigger > 0){
-          leftback.setPower(gamepad2.left_stick_y - gamepad2.left_stick_x);
-          rightfront.setPower(gamepad2.left_stick_y - gamepad2.left_stick_x);
-          leftfront.setPower(-gamepad2.left_stick_y - gamepad2.left_stick_x);
-          rightback.setPower(-gamepad2.left_stick_y - gamepad2.left_stick_x);
-
-        } else {
-          if (gamepad2.left_trigger > 0){
-            leftback.setPower((gamepad2.left_stick_y - gamepad2.left_stick_x)*x);
-            rightfront.setPower((gamepad2.left_stick_y - gamepad2.left_stick_x)*x);
-            leftfront.setPower((-gamepad2.left_stick_y - gamepad2.left_stick_x)*x);
-            rightback.setPower((-gamepad2.left_stick_y - gamepad2.left_stick_x)*x);
-          } else {
-            leftback.setPower((gamepad2.left_stick_y - gamepad2.left_stick_x)*c);
-            rightfront.setPower((gamepad2.left_stick_y - gamepad2.left_stick_x)*c);
-            leftfront.setPower((-gamepad2.left_stick_y - gamepad2.left_stick_x)*c);
-            rightback.setPower((-gamepad2.left_stick_y - gamepad2.left_stick_x)*c);
-          }
-        }
-        */
+                if (gamepad1.right_trigger>0)
+                    intakemotor.setPower(1);
+                else if (gamepad1.left_trigger>0) {
+                    intakemotor.setPower(-1);
+                }
+                else intakemotor.setPower(0);
                 //intakemotor.setPower(gamepad1.right_trigger);
 
 
                 armmotor.setPower(gamepad1.right_stick_y);
-                if (0.35 <= (h - (gamepad1.left_stick_y/1000)) && (h - (gamepad1.left_stick_y/1000)) <= 0.96){
+                if (0.15 <= (h - (gamepad1.left_stick_y/1000)) && (h - (gamepad1.left_stick_y/1000)) <= 1){
                     h = h - (gamepad1.left_stick_y/1000);
                 }
 
+
                 ///////////////////////////////////////////////////////
+
 
         /*
         leftfront.setPower((gamepad1.right_stick_y)*s);
@@ -158,13 +125,13 @@ public class magic extends LinearOpMode {
 
                 /////////////////////////////////////////////////////////
 
-                if (gamepad2.dpad_left){
+                if (gamepad2.dpad_right){
                     leftFront.setPower(s);
                     leftRear.setPower(s);
                     rightFront.setPower(-s);
                     rightRear.setPower(-s);
                 }
-                if (gamepad2.dpad_right){
+                if (gamepad2.dpad_left){
                     leftFront.setPower(-s);
                     leftRear.setPower(-s);
                     rightFront.setPower(s);
@@ -186,12 +153,33 @@ public class magic extends LinearOpMode {
                 //////////////////////////////////////////////////////////////
 
                 double y = -gamepad2.left_stick_y; // Remember, Y stick value is reversed
-                double x = -gamepad2.right_stick_x * 1.1; // Counteract imperfect strafing
-                double rx = -gamepad2.left_stick_x;
+                double x = gamepad2.left_stick_x * 1.1; // Counteract imperfect strafing
+                double rx = gamepad2.right_stick_x;
 
                 // Denominator is the largest motor power (absolute value) or 1
                 // This ensures all the powers maintain the same ratio,
                 // but only if at least one is out of the range [-1, 1]
+
+
+                /////////////////////////////////////////////////////////////////////////
+
+                // This is field centric driving
+
+               /*
+                double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+
+                double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+                double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+
+                double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+                double frontLeftPower = ((rotY + x + rotX)*s) / denominator;
+                double backLeftPower = ((rotY - x + rotX)*s) / denominator;
+                double frontRightPower = ((rotY - rotX - rx)*s) / denominator;
+                double backRightPower = ((rotY + rotX - rx)*s) / denominator;
+               */
+
+                //////////////////////////////////////////////////////////
+
                 double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
                 double frontLeftPower = ((y + x + rx)*s) / denominator;
                 double backLeftPower = ((y - x + rx)*s) / denominator;
@@ -210,6 +198,11 @@ public class magic extends LinearOpMode {
                 }
                 if (gamepad1.a){
                     k = -1;
+                }
+                if (gamepad1.y) {
+                    armmotor.setTargetPosition(100);
+                    armmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    armmotor.setPower(1);
                 }
                 if (gamepad1.x){
                     c = c+1;
