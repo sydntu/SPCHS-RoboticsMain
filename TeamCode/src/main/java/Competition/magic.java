@@ -106,7 +106,7 @@ public class magic extends LinearOpMode {
 
 
                 armmotor.setPower(gamepad1.right_stick_y);
-                if (0.15 <= (h - (gamepad1.left_stick_y/1000)) && (h - (gamepad1.left_stick_y/1000)) <= 1){
+                if (0.20 <= (h - (gamepad1.left_stick_y/1000)) && (h - (gamepad1.left_stick_y/1000)) <= .96){
                     h = h - (gamepad1.left_stick_y/1000);
                 }
 
@@ -220,6 +220,7 @@ public class magic extends LinearOpMode {
                 arm.setPosition(h);
                 hand.setPosition(b);
                 riggingsupport.setPosition(r);
+
 
             }
         }
