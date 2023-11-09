@@ -31,7 +31,6 @@ public class AutoRed extends LinearOpMode {
         hand = hardwareMap.get(Servo.class, "hand");
         arm = hardwareMap.get(Servo.class, "arm"); //wrist
         armmotor = hardwareMap.get(DcMotor.class, "armmotor");
-        armmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         /* Trajectories either consist of vectors or poses. Vectors are for moving only x and y coordinates while poses have a heading(angle)
             For example
@@ -41,21 +40,11 @@ public class AutoRed extends LinearOpMode {
          */
         TrajectorySequence genesis = drive.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(270))) //(0,0) is the starting position and 270 degrees is the direction it is facing if you put it on a coordinate system(straight down)
                 .forward(28)
-                .addTemporalMarker(() -> hand.setPosition(1))
-                .addTemporalMarker(() -> {
-                    armmotor.setTargetPosition(100);
-                    armmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    armmotor.setPower(1);
-                })
+                .addTemporalMarker(() -> armmotor.setPower(1))
                 .waitSeconds(3)
                 .splineToLinearHeading(new Pose2d(-10,-65,Math.toRadians(0)), Math.toRadians(270))
                 .forward(90)
                 .strafeLeft(25)
-                .addTemporalMarker(() -> {
-                    armmotor.setTargetPosition(0);
-                    armmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    armmotor.setPower(1);
-                })
                 .addTemporalMarker(() -> hand.setPosition(0))
                 .waitSeconds(5)
                 .strafeLeft(25)

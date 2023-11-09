@@ -165,7 +165,7 @@ public class magic extends LinearOpMode {
 
                 // This is field centric driving
 
-               /*
+/*
                 double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
                 double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
@@ -176,7 +176,7 @@ public class magic extends LinearOpMode {
                 double backLeftPower = ((rotY - x + rotX)*s) / denominator;
                 double frontRightPower = ((rotY - rotX - rx)*s) / denominator;
                 double backRightPower = ((rotY + rotX - rx)*s) / denominator;
-               */
+*/
 
                 //////////////////////////////////////////////////////////
 
@@ -198,11 +198,6 @@ public class magic extends LinearOpMode {
                 }
                 if (gamepad1.a){
                     k = -1;
-                }
-                if (gamepad1.y) {
-                    armmotor.setTargetPosition(100);
-                    armmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    armmotor.setPower(1);
                 }
                 if (gamepad1.x){
                     c = c+1;
