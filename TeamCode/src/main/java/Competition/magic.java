@@ -106,7 +106,7 @@ public class magic extends LinearOpMode {
 
 
                 armmotor.setPower(gamepad1.right_stick_y);
-                if (0.20 <= (h - (gamepad1.left_stick_y/1000)) && (h - (gamepad1.left_stick_y/1000)) <= .96){
+                if (0.20 <= (h - (gamepad1.left_stick_y/1000)) && (h - (gamepad1.left_stick_y/1000)) <= .80){
                     h = h - (gamepad1.left_stick_y/1000);
                 }
 
@@ -198,6 +198,11 @@ public class magic extends LinearOpMode {
                 }
                 if (gamepad1.a){
                     k = -1;
+                }
+                if(gamepad1.y){
+                    armmotor.setTargetPosition(-2900);
+                    armmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    armmotor.setPower(1);
                 }
                 if (gamepad1.x){
                     c = c+1;

@@ -23,7 +23,8 @@ public class AutoRed extends LinearOpMode {
     private Servo hand;
     private Servo arm;
     private DcMotor armmotor;
-    private VisionPortal portal;
+    private int lowpos = -2900; //this value is the lowest position the arm can go in order to pick up the pixels
+    private int bbpos = 500; //this value is the arm position needed for placing pixels on backboard
 
     @Override
     public void runOpMode() {
@@ -38,27 +39,19 @@ public class AutoRed extends LinearOpMode {
             Pose2d myPose = new Pose2d(10,-10, Math.toRadians(120));
             Assuming you start at (0,0) at the start of the program, the robot with move to the coordinates labeled at an 120 degree heading
          */
-        TrajectorySequence genesis = drive.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(270))) //(0,0) is the starting position and 270 degrees is the direction it is facing if you put it on a coordinate system(straight down)
-                .forward(30)
-                .addTemporalMarker(() -> arm.setPosition(1))
-                .addTemporalMarker(()-> hand.setPosition(1))
-                .waitSeconds(.5)
+        TrajectorySequence genesis = drive.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(270)))//(0,0) is the starting position and 270 degrees is the direction it is facing if you put it on a coordinate system(straight down)
+                .addTemporalMarker(() -> hand.setPosition(1)) //closes on the pixel
+                .splineToSplineHeading(new Pose2d(0,-65, Math.toRadians(0)), Math.PI + Math.PI)
+                .splineToLinearHeading(new Pose2d(65, -34.5, Math.toRadians(0)), Math.toRadians(60))
+                .addTemporalMarker(2,() -> arm.setPosition(.5) )
                 .addTemporalMarker(() -> {
-                    armmotor.setTargetPosition(-3000);
+                    armmotor.setTargetPosition(bbpos);
                     armmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     armmotor.setPower(1);
-                })
+                }) //moves the arm to the drop the pixel on the backboard
                 .waitSeconds(5)
 
-                .addTemporalMarker(() -> hand.setPosition(0))
-                .waitSeconds(2)
 
-                .addTemporalMarker(() -> {
-                    armmotor.setTargetPosition(400);
-                    armmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    armmotor.setPower(1);
-                })
-                .waitSeconds(3)
                 .build();
 
 
