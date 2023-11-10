@@ -33,14 +33,20 @@ public class AutoBlueBoardStart extends LinearOpMode {
             Assuming you start at (0,0) at the start of the program, the robot with move to the coordinates labeled at an 120 degree heading
          */
         TrajectorySequence genesis = drive.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(90))) //(0,0) is the starting position and 270 degrees is the direction it is facing if you put it on a coordinate system(straight down)
-                .splineToLinearHeading(new Pose2d(25,25,Math.toRadians(0)), Math.toRadians(270))
-                .addTemporalMarker(() -> {
-                    armmotor.setPower(.50);
-                    hand.setPosition(0); // lowers servo
+                .addTemporalMarker(() -> hand.setPosition(1))
+                .splineToSplineHeading(new Pose2d(40,27,Math.toRadians(0)), Math.PI/2)
+                .UNSTABLE_addTemporalMarkerOffset(0,() -> {
+                    armmotor.setTargetPosition(500);
+                    armmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    armmotor.setPower(1);
                 })
-                .waitSeconds(3)
+                .addTemporalMarker(()-> arm.setPosition(0.5))
+                .addTemporalMarker(() -> hand.setPosition(0))
+                .waitSeconds(4)
+                .splineToLinearHeading(new Pose2d(55,12,Math.toRadians(0)),Math.PI + Math.PI)
                 .build();
 
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         waitForStart();
 

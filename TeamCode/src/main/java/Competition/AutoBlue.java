@@ -35,8 +35,8 @@ public class AutoBlue extends LinearOpMode {
          */
         TrajectorySequence genesis = drive.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(90))) //(0,0) is the starting position and 270 degrees is the direction it is facing if you put it on a coordinate system(straight down)
                 .addTemporalMarker(() -> hand.setPosition(1)) //closes on the pixel
-                .splineToSplineHeading(new Pose2d(0,65,Math.toRadians(0)), Math.PI + Math.PI)
-                .splineToLinearHeading(new Pose2d(65, 34.5, Math.toRadians(0)), Math.toRadians(300))
+                .splineToSplineHeading(new Pose2d(0,68,Math.toRadians(0)), Math.PI + Math.PI)
+                .splineToLinearHeading(new Pose2d(68, 34.5, Math.toRadians(0)), Math.toRadians(300))
                 .addTemporalMarker(2,() -> arm.setPosition(.5) )
                 .addTemporalMarker(() -> {
                     armmotor.setTargetPosition(bbpos);
@@ -44,8 +44,6 @@ public class AutoBlue extends LinearOpMode {
                     armmotor.setPower(1);
                 }) //moves the arm to the drop the pixel on the backboard
                 .waitSeconds(5)
-
-
                 .build();
 
 
