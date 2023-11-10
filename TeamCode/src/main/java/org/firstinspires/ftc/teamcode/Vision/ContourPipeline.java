@@ -19,9 +19,18 @@ import java.util.List;
 public class ContourPipeline extends OpenCvPipeline {
     Scalar HOT_PINK = new Scalar(196, 23, 112);
 
+
     // Pink, the default color                         Y      Cr     Cb    (Do not change Y)
     public static Scalar scalarLowerYCrCb = new Scalar(0.0, 188.0, 60.0);
     public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 100.0);
+
+    //RED ALLIANCE!
+    //public static Scalar scalarLowerYCrCb = new Scalar(0.0, 255.0, 32.0);
+    //public static Scalar scalarUpperYCrCb = new Scalar(255.0, 182.4, 100.8);
+
+    //BLUE ALLIANCE!
+    //public static Scalar scalarLowerYCrCb = new Scalar(0.0, 0.0, 255);
+    //public static Scalar scalarUpperYCrCb = new Scalar(255.0, 96.0, 170.6);
 
     // Yellow, freight or ducks!
     //public static Scalar scalarLowerYCrCb = new Scalar(0.0, 100.0, 0.0);
