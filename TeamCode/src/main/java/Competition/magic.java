@@ -28,7 +28,7 @@ public class magic extends LinearOpMode {
     public static Servo arm;
     public static Servo riggingsupport;
     public static DcMotor intakemotor;
-    public static double h = 0.5;
+    public static double h = .7;
     public static double g = 1;
     public static boolean z;
     public static Servo hand;
@@ -106,8 +106,9 @@ public class magic extends LinearOpMode {
 
 
                 armmotor.setPower(gamepad1.right_stick_y);
-                if (0.20 <= (h - (gamepad1.left_stick_y/1000)) && (h - (gamepad1.left_stick_y/1000)) <= .80){
-                    h = h - (gamepad1.left_stick_y/1000);
+                armmotor.setDirection(DcMotorSimple.Direction.REVERSE);
+                if (0.4 <= (h - (-gamepad1.left_stick_y/1000)) && (h - (-gamepad1.left_stick_y/1000)) <= 1){
+                    h = h - (-gamepad1.left_stick_y/1000);
                 }
 
 
@@ -193,16 +194,11 @@ public class magic extends LinearOpMode {
 
                 /////////////////////////////////////////////////////////////
 
-                if (gamepad1.b){
+                if (gamepad1.a){
                     k = 1;
                 }
-                if (gamepad1.a){
+                if (gamepad1.b){
                     k = -1;
-                }
-                if(gamepad1.y){
-                    armmotor.setTargetPosition(-2900);
-                    armmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    armmotor.setPower(1);
                 }
                 if (gamepad1.x){
                     c = c+1;
@@ -219,7 +215,7 @@ public class magic extends LinearOpMode {
                 if (gamepad2.x){
                     r = 0.8;
                 }
-                if (0.25 <= (b - (k/1000)) && (b - (k/1000)) <= 0.76){
+                if (0.30 <= (b - (k/1000)) && (b - (k/1000)) <= 0.80){
                     b = b - (k/1000);
                 }
                 arm.setPosition(h);
