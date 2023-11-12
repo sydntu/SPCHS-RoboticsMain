@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Vision;
 
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -20,7 +21,7 @@ public class ContourPipeline extends OpenCvPipeline {
     Scalar HOT_PINK = new Scalar(196, 23, 112);
 
 
-    // Pink, the default color                         Y      Cr     Cb    (Do not change Y)
+    // Red, the default color                         Y      Cr     Cb    (Do not change Y)
     public static Scalar scalarLowerYCrCb = new Scalar(0.0, 188.0, 60.0);
     public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 100.0);
 
@@ -215,6 +216,7 @@ public class ContourPipeline extends OpenCvPipeline {
     }
     public Point getRectMidpointXY() {
         synchronized (sync) {
+
             return new Point(getRectMidpointX(), getRectMidpointY());
         }
     }
@@ -228,4 +230,5 @@ public class ContourPipeline extends OpenCvPipeline {
             return maxRect.area();
         }
     }
+
 }
