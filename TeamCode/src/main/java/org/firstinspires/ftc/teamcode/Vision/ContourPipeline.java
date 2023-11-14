@@ -176,6 +176,9 @@ public class ContourPipeline extends OpenCvPipeline {
             debug = e;
             error = true;
         }
+
+
+
         return input;
     }
     /*

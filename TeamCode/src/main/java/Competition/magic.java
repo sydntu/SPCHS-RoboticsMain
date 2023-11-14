@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 import java.lang.Math;
@@ -65,6 +66,7 @@ public class magic extends LinearOpMode {
                 RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
                 RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
         imu.initialize(parameters);
+
 
 
         //////////////////////////////////////////////////////////////////
@@ -193,6 +195,26 @@ public class magic extends LinearOpMode {
                 rightRear.setPower(backRightPower);
 
                 /////////////////////////////////////////////////////////////
+/*
+               //Left and Right Claw Code
+
+                if (gamepad1.left_bumper) {
+                    leftClaw.setPosition(0.2);
+                } else if (leftClaw.getPosition() == 0.2){
+                    leftClaw.setPosition(0.8);
+                }
+                if (gamepad1.right_bumper) {
+                    rightClaw.setPosition(0.2);
+                } else if (rightClaw.getPosition() == 0.2){
+                    rightClaw.setPosition(0.8);
+                }
+*/
+                if (gamepad1.y) {
+                    armmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    armmotor.setTargetPosition(3200);
+                    armmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    armmotor.setPower(1);
+                }
 
                 if (gamepad1.a){
                     k = 1;
