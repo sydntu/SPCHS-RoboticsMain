@@ -88,14 +88,6 @@ public class AutoBlue extends LinearOpMode {
 
 
         //for right action:
-
-
-        TrajectorySequence genesis = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0))) //(0,0) is the starting position and 270 degrees is the direction it is facing if you put it on a coordinate system(straight down)
-                .addTemporalMarker(() -> hand.setPosition(.8)) //tightens grip on pixel
-                .addTemporalMarker(() -> arm.setPosition(.8)) //forces the wrist portion to snap inwards
-                .splineToSplineHeading(new Pose2d(40, 0, Math.toRadians(270)), Math.PI + Math.PI) //first point
-                .splineToLinearHeading(new Pose2d(25, -90, Math.toRadians(270)), Math.PI) //coordinates for the backboard
-
         TrajectorySequence genesis = drive.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //(0,0) is the starting position and 270 degrees is the direction it is facing if you put it on a coordinate system(straight down)
                 .addTemporalMarker(() -> hand.setPosition(.8))
                 .addTemporalMarker(() -> arm.setPosition(.8))
