@@ -2,6 +2,7 @@ package Competition;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -86,8 +87,12 @@ public class AutoRed extends LinearOpMode {
         TrajectorySequence genesis = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0))) //(0,0) is the starting position and 270 degrees is the direction it is facing if you put it on a coordinate system(straight down)
                 .addTemporalMarker(() -> hand.setPosition(.8)) //tightens grip on pixel
                 .addTemporalMarker(() -> arm.setPosition(.8)) //forces the wrist portion to snap inwards
-                .splineToSplineHeading(new Pose2d(40, 0, Math.toRadians(270)), Math.PI + Math.PI) //first point
-                .splineToLinearHeading(new Pose2d(25, -90, Math.toRadians(270)), Math.PI) //coordinates for the backboard
+                .lineToLinearHeading(new Pose2d(25,0,Math.toRadians(270)))
+                .addTemporalMarker(() -> hand.setPosition(.7))
+                .waitSeconds(2)
+                .addTemporalMarker(() -> hand.setPosition(.8))
+                .splineToSplineHeading(new Pose2d(45, 0, Math.toRadians(270)), Math.PI + Math.PI) //first point
+                .splineToLinearHeading(new Pose2d(30, -85, Math.toRadians(270)), Math.toRadians(60)) //coordinates for the backboard
                 .addTemporalMarker(() -> {
                     armmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //resets the value of the encoder to 0
                     armmotor.setTargetPosition(3500); //tells the motor the desired encoder value
@@ -103,20 +108,49 @@ public class AutoRed extends LinearOpMode {
                 .build();
 
         TrajectorySequence adam = drive.trajectorySequenceBuilder(new Pose2d(0,0, Math.toRadians(0)))
-                .forward(20)
-                .turn(50)
+                .addTemporalMarker(() -> hand.setPosition(.8))
+                .addTemporalMarker(() -> arm.setPosition(.8))
+                .lineToConstantHeading(new Vector2d(28,0))
+                .addTemporalMarker(() -> hand.setPosition(.6))
+                .waitSeconds(5)
+                .addTemporalMarker(() -> hand.setPosition(0.8))
+                .splineToSplineHeading(new Pose2d(45, 0, Math.toRadians(270)), Math.PI + Math.PI) //first point
+                .splineToLinearHeading(new Pose2d(30, -85, Math.toRadians(270)), Math.toRadians(60)) //coordinates for the backboard
+                .addTemporalMarker(() -> {
+                    armmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //resets the value of the encoder to 0
+                    armmotor.setTargetPosition(3500); //tells the motor the desired encoder value
+                    armmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION); //tells the motor to go to that desire value
+                    armmotor.setPower(1); // gives the motor value
+                })
+                .waitSeconds(3)
+                .addTemporalMarker(() -> arm.setPosition(.5)) //snaps the wrist to the front
+                .waitSeconds(.5)
+                .addTemporalMarker(() -> hand.setPosition(.2)) // opens the claw
+                .waitSeconds(5)
                 .build();
 
         TrajectorySequence eve = drive.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0)))
-                .strafeLeft(5)
+                .addTemporalMarker(() -> hand.setPosition(0.8))
+                .addTemporalMarker(() -> arm.setPosition(0.8))
+                .lineToLinearHeading(new Pose2d(25,0,Math.toRadians(90)))
+                .addTemporalMarker(() -> hand.setPosition(0.6))
+                .waitSeconds(3)
+                .addTemporalMarker(() -> hand.setPosition(0.8))
+                .splineToSplineHeading(new Pose2d(45, 0, Math.toRadians(270)), Math.PI + Math.PI) //first point
+                .splineToLinearHeading(new Pose2d(30, -82, Math.toRadians(270)), Math.toRadians(60)) //coordinates for the backboard
+                .addTemporalMarker(() -> {
+                    armmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //resets the value of the encoder to 0
+                    armmotor.setTargetPosition(3500); //tells the motor the desired encoder value
+                    armmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION); //tells the motor to go to that desire value
+                    armmotor.setPower(1); // gives the motor value
+                })
+                .waitSeconds(3)
+                .addTemporalMarker(() -> {
+                    arm.setPosition(.5);
+                    hand.setPosition(.2);
+                }) //snaps the wrist to the front and releases
+                .splineToLinearHeading(new Pose2d(30,-90,Math.toRadians(270)), Math.PI)
                 .build();
-
-
-
-
-
-
-
 
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -127,20 +161,21 @@ public class AutoRed extends LinearOpMode {
         if(isStopRequested()) return;
         if(myPipeline.getRectArea() > 2000){
             if(myPipeline.getRectMidpointX() > 400){
-                telemetry.addLine("Autonomous A");
+                telemetry.addLine("Autonomous Right");
                 drive.followTrajectorySequence(genesis);
+                webcam.stopStreaming();
+
             } else if(myPipeline.getRectMidpointX() > 200){
-                telemetry.addLine("Autonomous B");
+                telemetry.addLine("Autonomous Center");
                 drive.followTrajectorySequence(adam);
+                webcam.stopStreaming();
+
             } else {
-                telemetry.addLine("Autonomous C");
+                telemetry.addLine("Autonomous Left");
                 drive.followTrajectorySequence(eve);
+                webcam.stopStreaming();
             }
         }
-
-
-        if(isStopRequested()) return;
-
 
     }
 }

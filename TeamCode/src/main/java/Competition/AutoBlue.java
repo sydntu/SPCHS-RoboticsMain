@@ -1,5 +1,6 @@
 package Competition;
 
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -29,20 +30,27 @@ public class AutoBlue extends LinearOpMode {
             Assuming you start at (0,0) at the start of the program, the robot with move to the coordinates labeled at an 120 degree heading
          */
         TrajectorySequence genesis = drive.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //(0,0) is the starting position and 270 degrees is the direction it is facing if you put it on a coordinate system(straight down)
-                .addTemporalMarker(() -> hand.setPosition(.8)) //tightens grip on pixel
-                .addTemporalMarker(() -> arm.setPosition(.8)) //forces the wrist portion to snap inwards
-                .splineToSplineHeading(new Pose2d(42,0,Math.toRadians(90)), Math.PI +Math.PI)
-                .splineToLinearHeading(new Pose2d(25,90,Math.toRadians(90)), Math.PI)
+                .addTemporalMarker(() -> hand.setPosition(.8))
+                .addTemporalMarker(() -> arm.setPosition(.8))
+                .lineToConstantHeading(new Vector2d(28,0))
+                .addTemporalMarker(() -> hand.setPosition(.6))
+                .waitSeconds(5)
+                .addTemporalMarker(() -> hand.setPosition(0.8))
+                .splineToSplineHeading(new Pose2d(45, 0, Math.toRadians(270)), Math.PI + Math.PI) //first point
+                .splineToLinearHeading(new Pose2d(30, -85, Math.toRadians(270)), Math.toRadians(60)) //coordinates for the backboard
                 .addTemporalMarker(() -> {
                     armmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //resets the value of the encoder to 0
-                    armmotor.setTargetPosition(3200); //tells the motor the desired encoder value
+                    armmotor.setTargetPosition(3500); //tells the motor the desired encoder value
                     armmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION); //tells the motor to go to that desire value
                     armmotor.setPower(1); // gives the motor value
                 })
-                .addTemporalMarker(() -> arm.setPosition(.5)) //snaps the wrist to the front
                 .waitSeconds(3)
+                .addTemporalMarker(() -> arm.setPosition(.5)) //snaps the wrist to the front
+                .waitSeconds(.5)
                 .addTemporalMarker(() -> hand.setPosition(.2)) // opens the claw
+                .waitSeconds(5)
                 .build();
+
 
 
 

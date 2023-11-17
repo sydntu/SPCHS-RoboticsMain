@@ -30,10 +30,8 @@ public class magic extends LinearOpMode {
     public static Servo riggingsupport;
     public static DcMotor intakemotor;
     public static double h = .7;
-    public static double g = 1;
-    public static boolean z;
     public static Servo hand;
-    public static double k = -1;
+    public static double k = 0.3;
     //  public static double x = 0.4;
     public static int c = 0;
     public static double b = 0.5;
@@ -84,19 +82,8 @@ public class magic extends LinearOpMode {
                 // The Y axis of a joystick ranges from -1 in its topmost position
                 // to +1 in its bottommost position. We negate this value so that
                 // the topmost position corresponds to maximum forward power.
-
-                if (gamepad2.right_trigger > 0){
-                    s = 1;
-
-                } else {
-                    if (gamepad2.left_trigger > 0){
-                        s = 0.4;
-
-                    } else {
-                        s = 0.65;
-
-                    }
-                }
+                s = 1;
+                if (gamepad2.left_trigger > 0) s = 0.4;
 
                 if (gamepad1.right_trigger>0)
                     intakemotor.setPower(1);
@@ -209,18 +196,12 @@ public class magic extends LinearOpMode {
                     rightClaw.setPosition(0.8);
                 }
 */
-                if (gamepad1.y) {
-                    armmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                    armmotor.setTargetPosition(3200);
-                    armmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    armmotor.setPower(1);
-                }
 
                 if (gamepad1.a){
-                    k = 1;
+                    k = .7;
                 }
                 if (gamepad1.b){
-                    k = -1;
+                    k = .3;
                 }
                 if (gamepad1.x){
                     c = c+1;
@@ -241,7 +222,7 @@ public class magic extends LinearOpMode {
                     b = b - (k/1000);
                 }
                 arm.setPosition(h);
-                hand.setPosition(b);
+                hand.setPosition(k);
                 riggingsupport.setPosition(r);
 
 
