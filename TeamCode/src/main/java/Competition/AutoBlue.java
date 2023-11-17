@@ -1,7 +1,10 @@
 package Competition;
 
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -83,6 +86,7 @@ public class AutoBlue extends LinearOpMode {
             Assuming you start at (0,0) at the start of the program, the robot with move to the coordinates labeled at an 120 degree heading
          */
 
+
         //for right action:
 
 
@@ -91,6 +95,16 @@ public class AutoBlue extends LinearOpMode {
                 .addTemporalMarker(() -> arm.setPosition(.8)) //forces the wrist portion to snap inwards
                 .splineToSplineHeading(new Pose2d(40, 0, Math.toRadians(270)), Math.PI + Math.PI) //first point
                 .splineToLinearHeading(new Pose2d(25, -90, Math.toRadians(270)), Math.PI) //coordinates for the backboard
+
+        TrajectorySequence genesis = drive.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //(0,0) is the starting position and 270 degrees is the direction it is facing if you put it on a coordinate system(straight down)
+                .addTemporalMarker(() -> hand.setPosition(.8))
+                .addTemporalMarker(() -> arm.setPosition(.8))
+                .lineToConstantHeading(new Vector2d(28,0))
+                .addTemporalMarker(() -> hand.setPosition(.6))
+                .waitSeconds(5)
+                .addTemporalMarker(() -> hand.setPosition(0.8))
+                .splineToSplineHeading(new Pose2d(45, 0, Math.toRadians(270)), Math.PI + Math.PI) //first point
+                .splineToLinearHeading(new Pose2d(30, -85, Math.toRadians(270)), Math.toRadians(60)) //coordinates for the backboard
                 .addTemporalMarker(() -> {
                     armmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //resets the value of the encoder to 0
                     armmotor.setTargetPosition(3500); //tells the motor the desired encoder value
@@ -98,6 +112,7 @@ public class AutoBlue extends LinearOpMode {
                     armmotor.setPower(1); // gives the motor value
                 })
                 .waitSeconds(3)
+
                 .addTemporalMarker(() -> {
                     arm.setPosition(.5);
                     hand.setPosition(.2);
@@ -112,6 +127,12 @@ public class AutoBlue extends LinearOpMode {
         //for left action:
         TrajectorySequence eve = drive.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0)))
                 .strafeLeft(5)
+
+                .addTemporalMarker(() -> arm.setPosition(.5)) //snaps the wrist to the front
+                .waitSeconds(.5)
+                .addTemporalMarker(() -> hand.setPosition(.2)) // opens the claw
+                .waitSeconds(5)
+
                 .build();
 
 
@@ -122,7 +143,9 @@ public class AutoBlue extends LinearOpMode {
 
 
 
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
         waitForStart();
 
