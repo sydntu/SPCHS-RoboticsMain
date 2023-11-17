@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.Vision.ContourPipeline;
+import org.firstinspires.ftc.teamcode.Vision.ContourPipelineRed;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.opencv.core.Scalar;
@@ -46,8 +46,8 @@ public class AutoRed extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         //OpenCV Pipeline
-        ContourPipeline myPipeline;
-        webcam.setPipeline(myPipeline = new ContourPipeline(borderLeftX,borderRightX,borderTopY,borderBottomY));
+        ContourPipelineRed myPipeline;
+        webcam.setPipeline(myPipeline = new ContourPipelineRed(borderLeftX,borderRightX,borderTopY,borderBottomY));
         // Configuration of Pipeline
         myPipeline.configureScalarLower(scalarLowerYCrCb.val[0],scalarLowerYCrCb.val[1],scalarLowerYCrCb.val[2]);
         myPipeline.configureScalarUpper(scalarUpperYCrCb.val[0],scalarUpperYCrCb.val[1],scalarUpperYCrCb.val[2]);
@@ -83,6 +83,10 @@ public class AutoRed extends LinearOpMode {
             Pose2d myPose = new Pose2d(10,-10, Math.toRadians(120));
             Assuming you start at (0,0) at the start of the program, the robot with move to the coordinates labeled at an 120 degree heading
          */
+
+        //for right action:
+
+
         TrajectorySequence genesis = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0))) //(0,0) is the starting position and 270 degrees is the direction it is facing if you put it on a coordinate system(straight down)
                 .addTemporalMarker(() -> hand.setPosition(.8)) //tightens grip on pixel
                 .addTemporalMarker(() -> arm.setPosition(.8)) //forces the wrist portion to snap inwards
@@ -101,12 +105,12 @@ public class AutoRed extends LinearOpMode {
                 }) //snaps the wrist to the front and releases
                 .splineToLinearHeading(new Pose2d(30,-90,Math.toRadians(270)), Math.PI)
                 .build();
-
+        //for middle action:
         TrajectorySequence adam = drive.trajectorySequenceBuilder(new Pose2d(0,0, Math.toRadians(0)))
                 .forward(20)
-                .turn(50)
+                .turn(Math.toRadians(90))
                 .build();
-
+        //for left action:
         TrajectorySequence eve = drive.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0)))
                 .strafeLeft(5)
                 .build();
@@ -132,10 +136,11 @@ public class AutoRed extends LinearOpMode {
             } else if(myPipeline.getRectMidpointX() > 200){
                 telemetry.addLine("Autonomous B");
                 drive.followTrajectorySequence(adam);
-            } else {
+            } else if(myPipeline.getRectMidpointX() <= 200){
                 telemetry.addLine("Autonomous C");
                 drive.followTrajectorySequence(eve);
             }
+            drive.followTrajectorySequence(genesis);
         }
 
 

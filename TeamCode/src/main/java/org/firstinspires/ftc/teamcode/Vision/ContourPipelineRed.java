@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Vision;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -17,7 +16,7 @@ import java.util.List;
 
 // Credits to team 7303 RoboAvatars, adjusted by team 3954 Pink to the Future
 
-public class ContourPipeline extends OpenCvPipeline {
+public class ContourPipelineRed extends OpenCvPipeline {
     Scalar HOT_PINK = new Scalar(196, 23, 112);
 
 
@@ -69,7 +68,7 @@ public class ContourPipeline extends OpenCvPipeline {
 
     private final Object sync = new Object();
 
-    public ContourPipeline(double borderLeftX, double borderRightX, double borderTopY, double borderBottomY) {
+    public ContourPipelineRed(double borderLeftX, double borderRightX, double borderTopY, double borderBottomY) {
         this.borderLeftX = borderLeftX;
         this.borderRightX = borderRightX;
         this.borderTopY = borderTopY;
