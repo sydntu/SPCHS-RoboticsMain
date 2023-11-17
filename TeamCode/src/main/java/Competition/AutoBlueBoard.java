@@ -30,7 +30,12 @@ public class AutoBlueBoard extends LinearOpMode {
             Pose2d myPose = new Pose2d(10,-10, Math.toRadians(120));
             Assuming you start at (0,0) at the start of the program, the robot with move to the coordinates labeled at an 120 degree heading
          */
-        TrajectorySequence genesis = drive.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //(0,0) is the starting position and 270 degrees is the direction it is facing if you put it on a coordinate system(straight down)
+
+        Pose2d startPose = new Pose2d(35, 57, 270);
+
+        drive.setPoseEstimate(startPose);
+
+        TrajectorySequence genesis = drive.trajectorySequenceBuilder(startPose) //(0,0) is the starting position and 270 degrees is the direction it is facing if you put it on a coordinate system(straight down)
                 .addTemporalMarker(() -> hand.setPosition(1))
                 .strafeLeft(60)
                 .addTemporalMarker(() -> hand.setPosition(0))
