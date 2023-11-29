@@ -16,7 +16,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import java.lang.Math;
 
 @TeleOp(name = "main", group = "Competition")
-public class magic extends LinearOpMode {
+public class
+magic extends LinearOpMode {
 
     public static int rdirection = 1;
     public static int ldirection = -1;
