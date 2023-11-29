@@ -16,6 +16,7 @@ public class testing extends LinearOpMode{
 
         TrajectorySequence Test = drive.trajectorySequenceBuilder(new Pose2d(0,0, Math.toRadians(0)))
                 .forward(30)
+                .strafeRight(30)
                 .build();
 
     }
