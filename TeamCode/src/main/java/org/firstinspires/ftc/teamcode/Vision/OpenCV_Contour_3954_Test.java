@@ -1,21 +1,13 @@
 package org.firstinspires.ftc.teamcode.Vision;
 
-import static Competition.magic.arm;
-import static Competition.magic.armmotor;
-import static Competition.magic.hand;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.opencv.core.Scalar;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -58,8 +50,8 @@ public class OpenCV_Contour_3954_Test extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         //OpenCV Pipeline
-        ContourPipeline myPipeline;
-        webcam.setPipeline(myPipeline = new ContourPipeline(borderLeftX,borderRightX,borderTopY,borderBottomY));
+        ContourPipelineBlue myPipeline;
+        webcam.setPipeline(myPipeline = new ContourPipelineBlue(borderLeftX,borderRightX,borderTopY,borderBottomY));
         // Configuration of Pipeline
         myPipeline.configureScalarLower(scalarLowerYCrCb.val[0],scalarLowerYCrCb.val[1],scalarLowerYCrCb.val[2]);
         myPipeline.configureScalarUpper(scalarUpperYCrCb.val[0],scalarUpperYCrCb.val[1],scalarUpperYCrCb.val[2]);
@@ -113,7 +105,7 @@ public class OpenCV_Contour_3954_Test extends LinearOpMode {
             }
         }
     }
-    public void testing(ContourPipeline myPipeline){
+    public void testing(ContourPipelineBlue myPipeline){
         if(lowerruntime + 0.05 < getRuntime()){
             CrLowerUpdate += -gamepad1.left_stick_y;
             CbLowerUpdate += gamepad1.left_stick_x;
